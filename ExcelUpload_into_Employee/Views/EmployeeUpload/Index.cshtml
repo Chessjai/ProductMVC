@@ -1,0 +1,39 @@
+﻿
+
+
+<h2>Upload Excel File</h2>
+
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="excelFile" name="excelFile" accept=".xlsx" />
+    <button type="button" id="showButton">Show</button>
+</form>
+
+<table class="table" id="employeeTable" style="display: none;">
+    <!-- Table headers and rows will be populated dynamically -->
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#showButton").click(function () {
+            var formData = new FormData();
+            formData.append("excelFile", $("#excelFile")[0].files[0]);
+
+            $.ajax({
+                url: "/Employee/DisplayExcelData",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    // Populate the table with the data
+                    $("#employeeTable").html(data).show();
+                },
+                error: function () {
+                    alert("Error uploading file or processing data.");
+                }
+            });
+        });
+    });
+</script>
+
